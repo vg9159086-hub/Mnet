@@ -3,150 +3,229 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MNET RPOP Official</title>
+<title>MNET RPOP</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(180deg, #0f0f0f, #1a1a1a);
-    color: white;
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#0f0f0f;
+    color:white;
 }
-
-header {
-    background: #ff2a7f;
-    padding: 20px;
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 2px;
+header{
+    background:#ff2a7f;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+    font-weight:bold;
 }
-
-nav {
-    background: #141414;
-    padding: 12px;
-    text-align: center;
+section{
+    padding:20px;
+    border-bottom:1px solid #222;
 }
-
-nav a {
-    color: white;
-    text-decoration: none;
-    margin: 15px;
-    font-weight: bold;
+input, textarea{
+    width:100%;
+    padding:8px;
+    margin:5px 0;
+    background:#1a1a1a;
+    color:white;
+    border:1px solid #333;
 }
-
-nav a:hover {
-    color: #ff2a7f;
+button{
+    background:#ff2a7f;
+    border:none;
+    padding:8px 12px;
+    color:white;
+    cursor:pointer;
+    margin:5px 0;
 }
-
-section {
-    padding: 30px;
+.card{
+    background:#1a1a1a;
+    padding:15px;
+    margin:15px 0;
 }
-
-h2 {
-    border-left: 5px solid #ff2a7f;
-    padding-left: 10px;
-}
-
-.card {
-    background: #1f1f1f;
-    padding: 20px;
-    margin-top: 15px;
-    border-radius: 12px;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.02);
-}
-
-button {
-    background: #ff2a7f;
-    border: none;
-    padding: 10px 15px;
-    color: white;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-button:hover {
-    opacity: 0.8;
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #111;
-    font-size: 14px;
-    margin-top: 40px;
+.like-btn{background:#28a745;}
+.dislike-btn{background:#dc3545;}
+img{max-width:100%;}
+.comment{
+    background:#111;
+    padding:5px;
+    margin:3px 0;
+    font-size:14px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-🎧 MNET RPOP OFFICIAL
-</header>
+<header>MNET RPOP</header>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#artists">Artistas</a>
-<a href="#mvs">MVs</a>
-<a href="#awards">RMA</a>
-</nav>
-
-<section id="home">
-<h2>🔥 Comeback do Mês</h2>
-<div class="card">
-<h3>VyrA - Summer Dream</h3>
-<p>3 dias atrás • 1.2M views</p>
-<button>Assistir</button>
-</div>
+<section id="loginSection">
+<h2>Login</h2>
+<input id="username" placeholder="Digite seu nome">
+<button onclick="login()">Entrar</button>
 </section>
 
-<section id="artists">
-<h2>🎤 Artistas</h2>
-
-<div class="card">
-<h3>VyrA</h3>
-<p>3 integrantes • Conceito Sweet Summer</p>
-</div>
-
-<div class="card">
-<h3>NovaWave</h3>
-<p>4 integrantes • Conceito Girl Crush</p>
-</div>
-
+<section id="registerSection" style="display:none;">
+<h2>Cadastrar Grupo</h2>
+<input id="company" placeholder="Nome da empresa">
+<input id="groupName" placeholder="Nome do grupo/solista">
+<input id="members" placeholder="Integrantes">
+<input id="fandom" placeholder="Nome do fandom">
+<input id="albumName" placeholder="Nome do álbum">
+<input type="file" id="groupImage" accept="image/*">
+<button onclick="registerGroup()">Cadastrar</button>
 </section>
 
-<section id="mvs">
-<h2>🎬 Últimos Lançamentos</h2>
-
-<div class="card">
-<p>VyrA - Summer Dream</p>
-</div>
-
-<div class="card">
-<p>NovaWave - Electric Love</p>
-</div>
-
+<section id="groupsSection" style="display:none;">
+<h2>Grupos</h2>
+<div id="groupsList"></div>
 </section>
 
-<section id="awards">
-<h2>🏆 RMA - Roblox Music Awards</h2>
-
-<div class="card">
-<p>Vote em Best Rpop Group 2026</p>
-<button>Votar Agora</button>
-</div>
-
+<section>
+<h2>Top Chart</h2>
+<div id="chart"></div>
 </section>
 
-<footer>
-© 2026 MNET RPOP • Official Rpop Portal
-</footer>
+<script>
+let currentUser = localStorage.getItem("mnetUser");
+let groups = JSON.parse(localStorage.getItem("mnetGroups")) || [];
+
+if(currentUser){
+    document.getElementById("loginSection").style.display="none";
+    document.getElementById("registerSection").style.display="block";
+    document.getElementById("groupsSection").style.display="block";
+    renderGroups();
+}
+
+function login(){
+    const name = document.getElementById("username").value;
+    if(name){
+        localStorage.setItem("mnetUser", name);
+        location.reload();
+    }
+}
+
+function registerGroup(){
+    const company = document.getElementById("company").value;
+    const groupName = document.getElementById("groupName").value;
+    const members = document.getElementById("members").value;
+    const fandom = document.getElementById("fandom").value;
+    const albumName = document.getElementById("albumName").value;
+    const file = document.getElementById("groupImage").files[0];
+
+    const reader = new FileReader();
+    reader.onload = function(e){
+        const newGroup = {
+            id: Date.now(),
+            company,
+            groupName,
+            members,
+            fandom,
+            albumName,
+            image:e.target.result,
+            likes:0,
+            dislikes:0,
+            sales:0,
+            comments:generateBotComments()
+        };
+        groups.push(newGroup);
+        save();
+        renderGroups();
+    }
+    if(file){
+        reader.readAsDataURL(file);
+    }
+}
+
+function generateBotComments(){
+    const bots = [
+        "MEU DEUS QUE TUDOOOO 😭",
+        "AMEI DEMAIS",
+        "RPOP ESTÁ CRESCENDO",
+        "LINDASSSS",
+        "EU VOU STAN",
+        "PERFEIÇÃO",
+        "ICÔNICAS",
+        "QUE VOCAL",
+        "CHOCADO",
+        "SOCORRO"
+    ];
+    let arr=[];
+    for(let i=0;i<30;i++){
+        arr.push(bots[Math.floor(Math.random()*bots.length)]);
+    }
+    return arr;
+}
+
+function like(id){
+    const group = groups.find(g=>g.id===id);
+    group.likes++;
+    group.sales += 10;
+    save();
+    renderGroups();
+}
+
+function dislike(id){
+    const group = groups.find(g=>g.id===id);
+    group.dislikes++;
+    save();
+    renderGroups();
+}
+
+function addComment(id){
+    const input = document.getElementById("comment-"+id);
+    const group = groups.find(g=>g.id===id);
+    if(input.value){
+        group.comments.push(input.value);
+        input.value="";
+        save();
+        renderGroups();
+    }
+}
+
+function save(){
+    localStorage.setItem("mnetGroups", JSON.stringify(groups));
+}
+
+function renderGroups(){
+    const container = document.getElementById("groupsList");
+    container.innerHTML="";
+    groups.forEach(g=>{
+        container.innerHTML+=`
+        <div class="card">
+            <h3>${g.groupName}</h3>
+            <img src="${g.image}">
+            <p><b>Empresa:</b> ${g.company}</p>
+            <p><b>Integrantes:</b> ${g.members}</p>
+            <p><b>Fandom:</b> ${g.fandom}</p>
+            <p><b>Álbum:</b> ${g.albumName}</p>
+            <p>Likes: ${g.likes} | Dislikes: ${g.dislikes} | Vendas: ${g.sales}</p>
+            <button class="like-btn" onclick="like(${g.id})">Like</button>
+            <button class="dislike-btn" onclick="dislike(${g.id})">Dislike</button>
+            <div>
+                <input id="comment-${g.id}" placeholder="Comentar...">
+                <button onclick="addComment(${g.id})">Enviar</button>
+            </div>
+            <div>
+                ${g.comments.map(c=>`<div class="comment">${c}</div>`).join("")}
+            </div>
+        </div>
+        `;
+    });
+
+    renderChart();
+}
+
+function renderChart(){
+    const sorted = [...groups].sort((a,b)=> (b.likes + b.sales) - (a.likes + a.sales));
+    const chart = document.getElementById("chart");
+    chart.innerHTML="";
+    sorted.slice(0,10).forEach((g,i)=>{
+        chart.innerHTML+=`<p>${i+1}. ${g.groupName} (${g.likes + g.sales} pts)</p>`;
+    });
+}
+</script>
 
 </body>
 </html>
