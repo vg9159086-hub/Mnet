@@ -46,14 +46,30 @@ button:hover{opacity:0.85;}
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('ranking')">Ranking</button>
 </nav>
-<div class="container"><div id="home">
+<!-- LOGIN BOX -->
 <div id="loginBox" class="card">
-<h2>Entrar</h2>
-<input id="username" placeholder="Seu nome">
-<button onclick="login()">Entrar</button>
+  <h2>Entrar</h2>
+  <input id="username" placeholder="Seu nome">
+  <button id="loginBtn">Entrar</button>
 </div>
+
+<!-- APP após login -->
 <div id="app" class="hidden">
-<div class="card">
+  <h3>Bem-vindo, <span id="userDisplay"></span>!</h3>
+  <p>Agora você pode criar empresas e artistas.</p>
+</div>
+
+<script>
+// LOGIN FUNCIONAL
+document.getElementById('loginBtn').addEventListener('click', function(){
+  const name = document.getElementById('username').value.trim();
+  if(!name) return alert('Digite seu nome');
+  localStorage.setItem('rpopUser', name);
+  document.getElementById('userDisplay').textContent = name;
+  document.getElementById('loginBox').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
+});
+</script>
 <h2>Criar Empresa</h2>
 <input id="companyName" placeholder="Nome da Empresa">
 <input id="ceoName" placeholder="Nome do CEO">
