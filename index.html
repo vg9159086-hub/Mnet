@@ -51,12 +51,13 @@ button:hover{opacity:0.85;}
   <h2>Entrar</h2>
   <input id="username" placeholder="Seu nome">
   <button id="loginBtn">Entrar</button>
+  <button id="guestBtn">Entrar como visitante</button>
 </div>
 
 <!-- APP após login -->
 <div id="app" class="hidden">
   <h3>Bem-vindo, <span id="userDisplay"></span>!</h3>
-  <p>Agora você pode criar empresas e artistas.</p>
+  <p id="guestMessage">Você pode criar empresas ou apenas explorar o site.</p>
 </div>
 
 <script>
@@ -65,10 +66,30 @@ document.getElementById('loginBtn').addEventListener('click', function(){
   const name = document.getElementById('username').value.trim();
   if(!name) return alert('Digite seu nome');
   localStorage.setItem('rpopUser', name);
+  startApp(name, false);
+});
+
+// ENTRAR COMO VISITANTE
+document.getElementById('guestBtn').addEventListener('click', function(){
+  const guestName = 'Visitante';
+  localStorage.setItem('rpopUser', guestName);
+  startApp(guestName, true);
+});
+
+// FUNÇÃO PARA INICIAR O APP
+function startApp(name, isGuest){
   document.getElementById('userDisplay').textContent = name;
   document.getElementById('loginBox').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
-});
+  // se for visitante, esconde criação de empresa
+  if(isGuest){
+    document.getElementById('guestMessage').textContent = 'Você está como visitante e não pode criar empresas, mas pode explorar o site!';
+    // se existir botão ou painel de criação de empresa, esconda:
+    const companyPanel = document.getElementById('createCompanyPanel');
+    if(companyPanel) companyPanel.style.display = 'none';
+  }
+}
+</script>
 </script>
 <h2>Criar Empresa</h2>
 <input id="companyName" placeholder="Nome da Empresa">
