@@ -1,231 +1,98 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MNET RPOP</title>
-
+<title>RPOP Network 3.2 PREMIUM</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 <style>
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#0f0f0f;
-    color:white;
+:root{
+ --primary:#ff2a7f;
+ --secondary:#ff4fa3;
+ --bg:#0f0f14;
+ --card:#181820;
+ --soft:#24242d;
+ --text:#ffffff;
+ --muted:#9ca3af;
+ --font-main:'Poppins',sans-serif;
 }
-header{
-    background:#ff2a7f;
-    padding:15px;
-    text-align:center;
-    font-size:24px;
-    font-weight:bold;
-}
-section{
-    padding:20px;
-    border-bottom:1px solid #222;
-}
-input, textarea{
-    width:100%;
-    padding:8px;
-    margin:5px 0;
-    background:#1a1a1a;
-    color:white;
-    border:1px solid #333;
-}
-button{
-    background:#ff2a7f;
-    border:none;
-    padding:8px 12px;
-    color:white;
-    cursor:pointer;
-    margin:5px 0;
-}
-.card{
-    background:#1a1a1a;
-    padding:15px;
-    margin:15px 0;
-}
-.like-btn{background:#28a745;}
-.dislike-btn{background:#dc3545;}
-img{max-width:100%;}
-.comment{
-    background:#111;
-    padding:5px;
-    margin:3px 0;
-    font-size:14px;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:var(--font-main);}
+body{background:var(--bg);color:var(--text);}
+header{background:linear-gradient(90deg,var(--primary),var(--secondary));padding:18px;text-align:center;font-size:24px;font-weight:bold;}
+nav{margin:10px 0;text-align:center;}
+nav button{margin:0 5px;}
+.container{max-width:1000px;margin:auto;padding:20px;}
+.card{background:var(--card);padding:18px;border-radius:14px;margin-bottom:20px;transition:0.3s;}
+.card:hover{transform:translateY(-3px);box-shadow:0 0 20px rgba(255,42,127,0.3);}
+input,textarea,select{width:100%;padding:10px;margin-bottom:10px;border-radius:8px;border:none;background:var(--soft);color:white;}
+button{padding:8px 14px;border:none;border-radius:8px;background:var(--primary);color:white;cursor:pointer;transition:0.2s;}
+button:hover{opacity:0.85;}
+.video iframe{width:100%;height:315px;border-radius:10px;margin-bottom:10px;}
+.actions{display:flex;gap:15px;align-items:center;margin:10px 0;}
+.action-btn{cursor:pointer;display:flex;align-items:center;gap:4px;}
+.comment-box{background:var(--soft);padding:8px;border-radius:8px;margin-top:8px;font-size:14px;}
+.rank{padding:6px 0;border-bottom:1px solid var(--soft);display:flex;align-items:center;gap:10px;}
+.rank img{width:30px;height:30px;border-radius:50%;}
+.badge-new{background:var(--secondary);padding:2px 6px;border-radius:6px;font-size:12px;margin-left:6px;}
+.hidden{display:none;}
+.artist-card{display:flex;align-items:center;gap:10px;}
+.artist-card img{width:60px;height:60px;border-radius:50%;}
+.mv-card{background:var(--soft);padding:10px;margin-bottom:10px;border-radius:8px;}
+.filter-bar{margin:10px 0;display:flex;gap:10px;}
 </style>
 </head>
-
 <body>
-
-<header>MNET RPOP</header>
-
-<section id="loginSection">
-<h2>Login</h2>
-<input id="username" placeholder="Digite seu nome">
+<header>RPOP Network 3.2 PREMIUM</header>
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('ranking')">Ranking</button>
+</nav>
+<div class="container"><div id="home">
+<div id="loginBox" class="card">
+<h2>Entrar</h2>
+<input id="username" placeholder="Seu nome">
 <button onclick="login()">Entrar</button>
-</section>
-
-<section id="registerSection" style="display:none;">
-<h2>Cadastrar Grupo</h2>
-<input id="company" placeholder="Nome da empresa">
-<input id="groupName" placeholder="Nome do grupo/solista">
-<input id="members" placeholder="Integrantes">
-<input id="fandom" placeholder="Nome do fandom">
-<input id="albumName" placeholder="Nome do álbum">
-<input type="file" id="groupImage" accept="image/*">
-<button onclick="registerGroup()">Cadastrar</button>
-</section>
-
-<section id="groupsSection" style="display:none;">
-<h2>Grupos</h2>
-<div id="groupsList"></div>
-</section>
-
-<section>
-<h2>Top Chart</h2>
-<div id="chart"></div>
-</section>
-
+</div>
+<div id="app" class="hidden">
+<div class="card">
+<h2>Criar Empresa</h2>
+<input id="companyName" placeholder="Nome da Empresa">
+<input id="ceoName" placeholder="Nome do CEO">
+<input type="file" id="companyPhoto" accept="image/*">
+<select id="companyFont">
+<option value="Poppins">Poppins</option>
+<option value="Orbitron">Orbitron</option>
+</select>
+<select id="primaryColor">
+<option value="#ff2a7f">Rosa</option>
+<option value="#1e90ff">Azul</option>
+<option value="#ff8c00">Laranja</option>
+<option value="#32cd32">Verde</option>
+</select>
+<select id="secondaryColor">
+<option value="#ff4fa3">Rosa Secundário</option>
+<option value="#00ffff">Ciano</option>
+<option value="#ffd700">Amarelo</option>
+<option value="#ff1493">Pink</option>
+</select>
+<button onclick="createCompany()">Criar Empresa</button>
+</div>
+<h2>Suas Empresas</h2>
+<div id="companies"></div>
+</div>
+</div><div id="ranking" class="hidden">
+<h2>Top 10 Artistas</h2>
+<div class="card" id="chart"></div>
+</div><!-- COMPANY PANEL --><div id="companyPage" class="hidden"></div>
+<div id="artistPage" class="hidden"></div>
+<div id="mvPage" class="hidden"></div></div>
 <script>
-let currentUser = localStorage.getItem("mnetUser");
-let groups = JSON.parse(localStorage.getItem("mnetGroups")) || [];
-
-if(currentUser){
-    document.getElementById("loginSection").style.display="none";
-    document.getElementById("registerSection").style.display="block";
-    document.getElementById("groupsSection").style.display="block";
-    renderGroups();
-}
-
-function login(){
-    const name = document.getElementById("username").value;
-    if(name){
-        localStorage.setItem("mnetUser", name);
-        location.reload();
-    }
-}
-
-function registerGroup(){
-    const company = document.getElementById("company").value;
-    const groupName = document.getElementById("groupName").value;
-    const members = document.getElementById("members").value;
-    const fandom = document.getElementById("fandom").value;
-    const albumName = document.getElementById("albumName").value;
-    const file = document.getElementById("groupImage").files[0];
-
-    const reader = new FileReader();
-    reader.onload = function(e){
-        const newGroup = {
-            id: Date.now(),
-            company,
-            groupName,
-            members,
-            fandom,
-            albumName,
-            image:e.target.result,
-            likes:0,
-            dislikes:0,
-            sales:0,
-            comments:generateBotComments()
-        };
-        groups.push(newGroup);
-        save();
-        renderGroups();
-    }
-    if(file){
-        reader.readAsDataURL(file);
-    }
-}
-
-function generateBotComments(){
-    const bots = [
-        "MEU DEUS QUE TUDOOOO 😭",
-        "AMEI DEMAIS",
-        "RPOP ESTÁ CRESCENDO",
-        "LINDASSSS",
-        "EU VOU STAN",
-        "PERFEIÇÃO",
-        "ICÔNICAS",
-        "QUE VOCAL",
-        "CHOCADO",
-        "SOCORRO"
-    ];
-    let arr=[];
-    for(let i=0;i<30;i++){
-        arr.push(bots[Math.floor(Math.random()*bots.length)]);
-    }
-    return arr;
-}
-
-function like(id){
-    const group = groups.find(g=>g.id===id);
-    group.likes++;
-    group.sales += 10;
-    save();
-    renderGroups();
-}
-
-function dislike(id){
-    const group = groups.find(g=>g.id===id);
-    group.dislikes++;
-    save();
-    renderGroups();
-}
-
-function addComment(id){
-    const input = document.getElementById("comment-"+id);
-    const group = groups.find(g=>g.id===id);
-    if(input.value){
-        group.comments.push(input.value);
-        input.value="";
-        save();
-        renderGroups();
-    }
-}
-
-function save(){
-    localStorage.setItem("mnetGroups", JSON.stringify(groups));
-}
-
-function renderGroups(){
-    const container = document.getElementById("groupsList");
-    container.innerHTML="";
-    groups.forEach(g=>{
-        container.innerHTML+=`
-        <div class="card">
-            <h3>${g.groupName}</h3>
-            <img src="${g.image}">
-            <p><b>Empresa:</b> ${g.company}</p>
-            <p><b>Integrantes:</b> ${g.members}</p>
-            <p><b>Fandom:</b> ${g.fandom}</p>
-            <p><b>Álbum:</b> ${g.albumName}</p>
-            <p>Likes: ${g.likes} | Dislikes: ${g.dislikes} | Vendas: ${g.sales}</p>
-            <button class="like-btn" onclick="like(${g.id})">Like</button>
-            <button class="dislike-btn" onclick="dislike(${g.id})">Dislike</button>
-            <div>
-                <input id="comment-${g.id}" placeholder="Comentar...">
-                <button onclick="addComment(${g.id})">Enviar</button>
-            </div>
-            <div>
-                ${g.comments.map(c=>`<div class="comment">${c}</div>`).join("")}
-            </div>
-        </div>
-        `;
-    });
-
-    renderChart();
-}
-
-function renderChart(){
-    const sorted = [...groups].sort((a,b)=> (b.likes + b.sales) - (a.likes + a.sales));
-    const chart = document.getElementById("chart");
-    chart.innerHTML="";
-    sorted.slice(0,10).forEach((g,i)=>{
-        chart.innerHTML+=`<p>${i+1}. ${g.groupName} (${g.likes + g.sales} pts)</p>`;
-    });
-}
-</script>
+let user=localStorage.getItem('rpopUser');
+let companies=JSON.parse(localStorage.getItem('rpopCompanies'))||[];
+function showPage(page){document.getElementById('home').classList.add('hidden');document.getElementById('ranking').classList.add('hidden');document.getElementById('companyPage').classList.add('hidden');document.getElementById('artistPage').classList.add('hidden');document.getElementById('mvPage').classList.add('hidden');document.getElementById(page).classList.remove('hidden');}
+function login(){const name=document.getElementById('username').value.trim();if(!name)return alert('Digite seu nome');localStorage.setItem('rpopUser',name);user=name;document.getElementById('loginBox').classList.add('hidden');document.getElementById('app').classList.remove('hidden');renderCompanies();renderChart();}
+function save(){localStorage.setItem('rpopCompanies',JSON.stringify(companies));}
+function createCompany(){const name=document.getElementById('companyName').value.trim();const ceo=document.getElementById('ceoName').value.trim();const font=document.getElementById('companyFont').value;const primary=document.getElementById('primaryColor').value;const secondary=document.getElementById('secondaryColor').value;const file=document.getElementById('companyPhoto').files[0];if(!name||!ceo)return alert('Preencha Empresa e CEO');const company={id:Date.now(),owner:user,name,ceo,photo:'',font,theme:{primary,secondary},artists:[]};if(file){const reader=new FileReader();reader.onload=e=>{company.photo=e.target.result;companies.push(company);save();renderCompanies();};reader.readAsDataURL(file);}else{companies.push(company);save();renderCompanies();}document.getElementById('companyName').value='';document.getElementById('ceoName').value='';document.getElementById('companyPhoto').value='';}
+function renderCompanies(){const container=document.getElementById('companies');container.innerHTML='';companies.forEach(c=>{let style=`--primary:${c.theme.primary};--secondary:${c.theme.secondary};font-family:${c.font}`;container.innerHTML+=`<div class='card' style='${style}'>${c.photo?`<img src='${c.photo}' style='width:100px;height:100px;border-radius:50%;margin-bottom:10px;'>`:''}<h3>${c.name}</h3><p>CEO: ${c.ceo}</p><button onclick='openCompany(${c.id})'>Gerenciar</button> <button onclick='viewCompany(${c.id})'>Ver Página</button></div>`;});}let currentCompany=null;function openCompany(id){currentCompany=companies.find(c=>c.id===id);if(currentCompany.owner!==user)return alert('Somente o dono pode gerenciar');let html=<div class='card'><h2>${currentCompany.name} - Painel</h2><button onclick='renderCompanies()'>Voltar</button><h3>Adicionar Artista</h3><input id='artistName' placeholder='Nome do Artista'><select id='artistType'><option>Grupo</option><option>Solista</option></select><input id='members' placeholder='Integrantes'><input id='fandom' placeholder='Fandom'><input type='file' id='artistPhoto' accept='image/*'><button onclick='addArtist()'>Adicionar Artista</button></div><h3>Artistas</h3><div id='artists'></div>;document.getElementById('companies').innerHTML=html;renderArtists();} function addArtist(){const name=document.getElementById('artistName').value.trim();const type=document.getElementById('artistType').value;const members=document.getElementById('members').value.trim();const fandom=document.getElementById('fandom').value.trim();const file=document.getElementById('artistPhoto').files[0];if(!name)return alert('Digite o nome do artista');const artist={id:Date.now(),name,type,members,fandom,photo:'',mvs:[]};if(file){const reader=new FileReader();reader.onload=e=>{artist.photo=e.target.result;currentCompany.artists.push(artist);save();renderArtists();};reader.readAsDataURL(file);}else{currentCompany.artists.push(artist);save();renderArtists();}document.getElementById('artistName').value='';document.getElementById('members').value='';document.getElementById('fandom').value='';document.getElementById('artistPhoto').value='';} function renderArtists(){const container=document.getElementById('artists');container.innerHTML='';currentCompany.artists.forEach(a=>{container.innerHTML+=<div class='card artist-card'>${a.photo?<img src='${a.photo}'>:''}<div><h4>${a.name} (${a.type})</h4><p>${a.members}</p><p>Fandom: ${a.fandom}</p><button onclick='addMV(${a.id})'>Adicionar MV</button> <button onclick='viewArtist(${a.id})'>Ver Página</button></div></div>;});} function addMV(artistId){const artist=currentCompany.artists.find(a=>a.id===artistId);const title=prompt('Nome do MV');if(!title)return;const director=prompt('Diretor do MV');const yt=prompt('Link do YouTube do MV');if(!yt)return alert('Link obrigatório');artist.mvs.push({id:Date.now(),title,director,youtubeID:extractYoutubeID(yt),votes:{},comments:[{user:'Bot1',text:'Que lindo!'}]});save();renderArtists();renderChart();} function extractYoutubeID(url){const reg=/(?:youtube.com.*v=|youtu.be/)([^&]+)/;const match=url.match(reg);return match?match[1]:null;} function voteMV(companyId,artistId,mvId,type){const company=companies.find(c=>c.id===companyId);const artist=company.artists.find(a=>a.id===artistId);const mv=artist.mvs.find(m=>m.id===mvId);const current=mv.votes[user];if(current===type){delete mv.votes[user];}else{mv.votes[user]=type;}save();renderChart();} function countVotes(votes,type){return Object.values(votes).filter(v=>v===type).length;} function renderChart(){const chart=document.getElementById('chart');let allArtists=[];companies.forEach(c=>{c.artists.forEach(a=>{const total=a.mvs.reduce((s,m)=>s+countVotes(m.votes,'like')-countVotes(m.votes,'dislike'),0);allArtists.push({name:a.name,total,photo:a.photo||''});});});allArtists.sort((a,b)=>b.total-a.total);chart.innerHTML='';allArtists.slice(0,10).forEach((a,i)=>{chart.innerHTML+=<div class='rank'>${a.photo?<img src='${a.photo}'>:''}${i+1}. ${a.name} — ${a.total} pts</div>;});} function viewCompany(id){const c=companies.find(x=>x.id===id);showPage('companyPage');let html=<div class='card' style='--primary:${c.theme.primary};--secondary:${c.theme.secondary};font-family:${c.font}'><h2>${c.name}</h2>${c.photo?<img src='${c.photo}' style='width:100px;height:100px;border-radius:50%;'>:''}<p>CEO: ${c.ceo}</p><h3>Artistas</h3>;c.artists.forEach(a=>{html+=<div class='artist-card'>${a.photo?<img src='${a.photo}'>:''}<div><h4>${a.name}</h4><p>${a.members}</p><p>Fandom: ${a.fandom}</p><button onclick='viewArtist(${a.id})'>Ver Página</button></div></div>;});html+='</div>';document.getElementById('companyPage').innerHTML=html;} function viewArtist(id){let artist=null;let company=null;companies.forEach(c=>{c.artists.forEach(a=>{if(a.id===id){artist=a;company=c;}});});if(!artist)return;showPage('artistPage');let html=<div class='card' style='--primary:${company.theme.primary};--secondary:${company.theme.secondary};font-family:${company.font}'><h2>${artist.name}</h2>${artist.photo?<img src='${artist.photo}' style='width:100px;height:100px;border-radius:50%;'>:''}<p>${artist.members}</p><p>Fandom: ${artist.fandom}</p><h3>MVs</h3>;artist.mvs.forEach(mv=>{html+=<div class='mv-card'><h4>${mv.title}</h4><p>Diretor: ${mv.director}</p><div class='video'><iframe src='https://www.youtube.com/embed/${mv.youtubeID}' frameborder='0' allowfullscreen></iframe></div><div class='actions'><button onclick='voteMV(${company.id},${artist.id},${mv.id},"like")'>👍 ${countVotes(mv.votes,'like')}</button><button onclick='voteMV(${company.id},${artist.id},${mv.id},"dislike")'>👎 ${countVotes(mv.votes,'dislike')}</button></div></div>;});html+='</div>';document.getElementById('artistPage').innerHTML=html;} </script>
 
 </body>
 </html>
