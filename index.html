@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RPOP Network 3.4</title>
+<title>RPOP Network 3.5</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -39,7 +39,7 @@ button:hover{opacity:0.85;}
 </style>
 </head>
 <body>
-<header>RPOP Network 3.4</header>
+<header>RPOP Network 3.5</header>
 <nav>
 <button onclick="showPage('home')">Home</button>
 <button onclick="showPage('ranking')">Ranking</button>
@@ -122,7 +122,7 @@ function startApp(name,isGuest){ document.getElementById('loginBox').classList.a
 
 function extractYoutubeID(url){ const reg=/(?:youtube.com.*v=|youtu.be/)([^&]+)/; const match=url.match(reg); return match?match[1]:null; }
 
-// VOTE MV function voteMV(companyId,artistId,mvId,type){ const company=companies.find(c=>c.id===companyId); const artist=company.artists.find(a=>a.id===artistId); const mv=artist.mvs.find(m=>m.id===mvId); const current=mv.votes[user]; if(current===type){delete mv.votes[user];}else{mv.votes[user]=type;} save(); renderChart(); }
+// VOTE MV function voteMV(companyId,artistId,mvId,type){ const company=companies.find(c=>c.id===companyId); const artist=company.artists.find(a=>a.id===artistId); const mv=artist.mvs.find(m=>m.id===mvId); const current=mv.votes[user]; if(current===type){delete mv.votes[user];}else{mv.votes[user]=type;} save(); renderChart(); renderArtists(); }
 
 function countVotes(votes,type){return Object.values(votes).filter(v=>v===type).length;}
 
